@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bank of America Statement</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+    font-family: Calibri, Arial, sans-serif;
+    color: #231F20;
+    padding: 20px;
+        }
+        
+        .page {
+            background: white;
+            max-width: 8.5in;
+            height: 11in;
+            margin: 0 auto 20px;
+            padding: 0.5in;
+            font-size: 10pt;
+            line-height: 1.3;
+            position: relative;
+        }
+        
+        /* Header section */
+        .header-top {
+            margin-bottom: 20px;
+            font-size: 8pt;
+            line-height: 1.4;
+        }
+        
+        .bank-address {
+            margin-bottom: 15px;
+        }
+        
+        .bank-address p {
+    margin: 1px 0;
+    line-height: normal;
+        }
+        
+        .customer-info {
+            margin-top: 15px;
+        }
+        
+        .customer-info strong {
+            font-weight: bold;
+        }
+        
+        .customer-info p {
+            margin: 2px 0;
+        }
+        
+        .divider {
+            border-top: 0px solid #231F20;
+            margin: 15px 0;
+        }
+        
+        /* Statement title section */
+        .statement-header {
+    margin-bottom: 20px;
+    width: 50%;
+        }
+        
+        .statement-title {
+            font-size: 17pt;
+            font-weight: bold;
+            color: #231F20;
+            margin: 0 0 5px 0;
+        }
+        
+        .statement-period {
+            font-size: 11pt;
+            color: #231F20;
+            margin: 2px 0;
+        }
+        
+        .account-holder-name {
+    font-size: 14pt;
+    color: #231F20;
+    margin: 5px 0 10px 0;
+    font-weight: bolder;
+        }
+        
+        /* Section titles */
+        .section-title {
+            font-size: 15pt;
+            color: #E3173E;
+            font-weight: bold;
+            margin: 100px 0 30px 0;
+            padding-top: 5px;
+        }
+        
+        /* Summary table */
+        .summary-table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 9.5pt;
+        }
+        
+        .summary-table td {
+            padding: 6px 0;
+            border-bottom: 1px solid #231F20;
+        }
+        
+        .summary-table td:first-child {
+            width: 70%;
+        }
+        
+        .summary-table td:last-child {
+            width: 30%;
+            text-align: right;
+            padding-right: 5px;
+        }
+        
+        .summary-table tr:last-child td {
+            border-top: 1px solid #231F20;
+            font-weight: bold;
+            color: #0061AA;
+            font-size: 10pt;
+        }
+        
+        /* Account number */
+        .account-number {
+    font-size: 13pt;
+    margin-top: -42px;
+    margin-right: 0;
+    margin-left: 50%;
+    margin-bottom: 9px;
+    width: 50%;
+    text-align: right;
+    font-weight: 550;
+    font-family: Arial;
+        }
+        
+        /* Transaction tables */
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 9pt;
+        }
+        
+        .transaction-table thead {
+            background: #fafafa;
+        }
+        
+        .transaction-table th {
+            padding: 6px 0;
+            text-align: left;
+            border-bottom: 1px solid #231F20;
+            font-weight: normal;
+            font-size: 8pt;
+        }
+        
+        .transaction-table td {
+            padding: 6px 0;
+            border-bottom: 1px solid #ccc;
+        }
+        
+        .col-date {
+            width: 12%;
+        }
+        
+        .col-desc {
+            width: 65%;
+        }
+        
+        .col-amount {
+            width: 23%;
+            text-align: right;
+            padding-right: 5px;
+        }
+        
+        .total-row {
+            background: white;
+            font-weight: bold;
+            color: #0061AA;
+            border-top: 1px solid #231F20;
+        }
+        
+        .subsection-title {
+            font-size: 11pt;
+            color: #E3173E;
+            font-weight: bold;
+            margin: 12px 0 8px 0;
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 20px;
+            font-size: 8pt;
+            line-height: 1.4;
+            border-top: 0px solid #231F20;
+            padding-top: 10px;
+        }
+        
+        .footer p {
+            margin: 3px 0;
+        }
+        
+        .page-info {
+            font-size: 6pt;
+            color: #999;
+            margin-top: 15px;
+            text-align: center;
+        }
+        
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+            .page {
+                box-shadow: none;
+                margin: 0;
+                page-break-after: always;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- Header -->
+        <div class="header-top">
+            <div class="bank-address">
+                <p>P.O. Box 15284</p>
+                <p>Wilmington, DE 19850</p>
+            </div>
+            
+            <p style="font-weight: bold; margin-top: 10px;">Customer service information</p>
+            
+            <div class="customer-info">
+                <p><strong>HELEN YEN</strong></p>
+                <p>3421 EL CAMINO REAL</p>
+                <p>ATHERTON, CA 94027-4301</p>
+                <p style="margin-top: 8px;">Customer Service <strong>1.800.432.1000</strong></p>
+                <p>TDD/TTY users only 1.800.288.4408 | En Español 1.800.688.6086</p>
+                <p><strong>bankofamerica.com</strong></p>
+                <p style="margin-top: 8px;">Bank of America, N.A.</p>
+                <p>P.O. Box 25118</p>
+                <p>Tampa, FL 33622-5118</p>
+            </div>
+        </div>
+        
+    
+        
+        <!-- Statement Info -->
+        <div class="statement-header">
+            <div class="statement-title">
+              <p>&nbsp;</p>
+              <p>Your BofA Core Checking</p>
+            </div>
+            <div class="statement-period">for October 23, 2021 to November 22, 2021</div>
+            <div class="account-holder-name" style="font-size: 13pt">HELEN YEN</div>
+        </div>
+        <div class="account-number">Account number 4400 66**** 9736</div>
+      <!-- Account Summary -->
+        <div class="section-title">Account summary</div>
+        <table class="summary-table">
+            <tr>
+                <td>Beginning balance on October 23, 2021</td>
+                <td>$3,431.87</td>
+            </tr>
+            <tr>
+                <td>Deposits and other additions</td>
+                <td>$2,538.00</td>
+            </tr>
+            <tr>
+                <td>ATM and debit card subtractions</td>
+                <td>-$1,144.64</td>
+            </tr>
+            <tr>
+                <td>Other subtractions</td>
+                <td>-$2,106.42</td>
+            </tr>
+            <tr>
+                <td>Checks</td>
+                <td>-$345.00</td>
+            </tr>
+            <tr>
+                <td>Service fees</td>
+                <td>-$0.00</td>
+            </tr>
+            <tr>
+                <td>Ending balance on November 22, 2021</td>
+                <td>$2,373.81</td>
+            </tr>
+        </table>
+        
+        
+        
+      <!-- Deposits Section -->
+        <div class="section-title">
+          <p><img src="bofas-1.jpg" alt="" width="100%" height="100%"/></p>
+       
+          <p style="font-size: 24px">&nbsp;IMPORTANT INFORMATION:</p>
+<p>&nbsp;BANK DEPOSIT ACCOUNTS&nbsp;</p>
+<p style="font-family: Baskerville, 'Palatino Linotype', Palatino, 'Century Schoolbook L', 'Times New Roman', serif">&nbsp;</p>
+          <p><span style="color: #000000; font-size: 14px;">&nbsp; </span></p>
+          
+			
+          <p>Change of address - <span style="color: #000000; font-size: 14px;">Please call us at the telephone number listed on the front of this statement to tell us about a change of address.&nbsp;</span></p>
+          <p>&nbsp;</p>
+          <p>Deposit agreement - <span style="color: #000000; font-size: 14px;">When you opened your account, you received a deposit agreement and fee schedule and agreed that your account would be governed by the terms of these documents, as we may amend them from time to time. These documents are part of the contract for your deposit account and govern all transactions relating to your account, including all deposits and withdrawals. Copies of both the deposit agreement and fee schedule which contain the current version of the terms and conditions of your account relationship may be obtained at our banking centers.&nbsp;</span></p>
+          <p>&nbsp;</p>
+          <p>Electronic transfers:<span style="color: #000000; font-size: 14px;"> In case of errors or questions about your electronic transfers - If you think your statement or receipt is wrong or you need more information about an electronic transfer (e.g., ATM transactions, direct deposits or withdrawals, point-of-sale transactions) on the statement or receipt, telephone or write us at the address and number listed on the front of this statement as soon as you can. We must hear from you no later than 60 days after we sent you the FIRST statement on which the error or problem appeared.</span></p>
+          <p>&nbsp;</p>
+<p>Deposits and other additions</p>
+        </div>
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-amount">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">10/23/21</td>
+                    <td class="col-desc">SSA Treas 310 Des XXX Soc Sec - Randall J Wright</td>
+                    <td class="col-amount">$1,538.00</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/01/21</td>
+                    <td class="col-desc">TD Ameritrade - Wright Randall</td>
+                    <td class="col-amount">$1,000.00</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">Total deposits and other additions</td>
+                    <td class="col-amount">$2,538.00</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Withdrawals Section -->
+        <div class="section-title">Withdrawals and other subtractions</div>
+        
+        <div class="subsection-title">ATM and debit card subtractions</div>
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-amount">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">10/24/21</td>
+                    <td class="col-desc">NORDSTROM 3635 - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$21.59</td>
+                </tr>
+                <tr>
+                    <td class="col-date">10/26/21</td>
+                    <td class="col-desc">SPAGHETTI BENDER - NEWPORT BEACH, CA</td>
+                    <td class="col-amount">-$149.47</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/02/21</td>
+                    <td class="col-desc">STATERBROS 114 - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$33.97</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/02/21</td>
+                    <td class="col-desc">USA 63343 - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$12.00</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/02/21</td>
+                    <td class="col-desc">THE HOME DEPOT 66 - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$8.53</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/05/21</td>
+                    <td class="col-desc">ISLANDS RESTAURANTS - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$32.44</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/05/21</td>
+                    <td class="col-desc">COSTCO GAS 043 - CORONA, CA</td>
+                    <td class="col-amount">-$20.57</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/05/21</td>
+                    <td class="col-desc">WAL-MART SUPER CE - CORONA, CA</td>
+                    <td class="col-amount">-$45.95</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/05/21</td>
+                    <td class="col-desc">TRADER JOE'S - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$23.16</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/12/21</td>
+                    <td class="col-desc">TRADER JOE'S - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$35.63</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/12/21</td>
+                    <td class="col-desc">THE HOME DEPOT 66 - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$213.84</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/13/21</td>
+                    <td class="col-desc">BARNES &amp; NOBLE 3485 - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$13.99</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/13/21</td>
+                    <td class="col-desc">BK OF AMERICA ATM - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$60.00</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/13/21</td>
+                    <td class="col-desc">TRADER JOE'S - RIVERSIDE, CA</td>
+                    <td class="col-amount">-$17.32</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/14/21</td>
+                    <td class="col-desc">CHEVRON 002023 - WESTMINSTER, CA</td>
+                    <td class="col-amount">-$10.54</td>
+                </tr>
+                <tr>
+                    <td class="col-date">11/18/21</td>
+                    <td class="col-desc">POLLY'S PIES 220 - MORENO VALLEY, CA</td>
+                    <td class="col-amount">-$25.42</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">Total ATM and debit card subtractions</td>
+                    <td class="col-amount">-$1,144.64</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Checks Section -->
+        <div class="subsection-title">Checks</div>
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th style="width: 65%;">Check #</th>
+                    <th class="col-amount">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">11/02/21</td>
+                    <td>4019</td>
+                    <td class="col-amount">-$345.00</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">Total checks</td>
+                    <td class="col-amount">-$345.00</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Other Subtractions -->
+        <div class="subsection-title">Other subtractions</div>
+        <table class="transaction-table">
+            <thead>
+                <tr>
+                    <th class="col-date">Date</th>
+                    <th class="col-desc">Description</th>
+                    <th class="col-amount">Amount</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="col-date">10/24/21</td>
+                    <td class="col-desc">MERCURY INSURANCE - Bill Payment</td>
+                    <td class="col-amount">-$350.33</td>
+                </tr>
+                <tr>
+                    <td class="col-date">10/24/21</td>
+                    <td class="col-desc">AT&amp;T U-VERSE - Bill Payment</td>
+                    <td class="col-amount">-$1,756.09</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2">Total other subtractions</td>
+                    <td class="col-amount">-$2,106.42</td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>IMPORTANT INFORMATION</strong></p>
+            <p style="margin-top: 5px; font-size: 7.5pt;">Change of address - Please call us at the telephone number listed on the front of this statement to tell us about a change of address.</p>
+            <p style="font-size: 7.5pt;">Reporting other problems - You must examine your statement carefully and promptly. You are in the best position to discover errors and unauthorized transactions on your account.</p>
+        </div>
+        
+        <div class="page-info">
+            Page 1 of 1 | © 2021 Bank of America Corporation
+        </div>
+    </div>
+</body>
+</html>

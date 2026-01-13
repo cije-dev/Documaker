@@ -1,0 +1,170 @@
+## templates/profile.html
+
+{% extends "base.html" %}
+
+{% block title %}Dashboard - PayStub Generator Pro{% endblock %}
+
+{% block content %}
+<div class="dashboard">
+    <h1 class="page-title">Your Dashboard</h1>
+
+    <div class="dashboard-grid">
+        <!-- Quick Actions -->
+        <section class="dashboard-section">
+            <h2 class="section-title">Quick Actions</h2>
+            <div class="action-buttons">
+                <a href="{{ url_for('generate') }}" class="btn btn-primary">
+                    <span class="btn-icon">➕</span> Generate Paystubs
+                </a>
+                <a href="{{ url_for('create_employee') }}" class="btn btn-secondary">
+                    <span class="btn-icon">👤</span> Add Employee
+                </a>
+                <a href="{{ url_for('create_company') }}" class="btn btn-secondary">
+                    <span class="btn-icon">🏢</span> Add Company
+                </a>
+            </div>
+        </section>
+
+        <!-- Recent Paystubs -->
+        <section class="dashboard-section">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <h2 class="section-title" style="margin-bottom: 0;">Recent Paystubs</h2>
+                {% if paystubs %}
+                <form method="POST" action="{{ url_for('mass_delete_stubs') }}" id="massDeleteForm" style="display: none;">
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete the selected paystubs? This action cannot be undone!')">
+                        🗑️ Delete Selected
+                    </button>
+                </form>
+                {% endif %}
+            </div>
+            {% if paystubs %}
+                <form method="POST" action="{{ url_for('mass_delete_stubs') }}" id="massDeleteForm">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 40px;">
+                                    <input type="checkbox" id="selectAll" onchange="toggleAllCheckboxes()">
+                                </th>
+                                <th>Check #</th>
+                                <th>Employee</th>
+                                <th>Period</th>
+                                <th>Gross</th>
+                                <th>Net</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stub in paystubs %}
+                            <tr class="{% if stub[7] %}edited{% endif %}">
+                                <td>
+                                    <input type="checkbox" name="stub_ids" value="{{ stub[0] }}" class="stub-checkbox" onchange="updateDeleteButton()">
+                                </td>
+                                <td>#{{ stub[1] }}</td>
+                                <td>{{ stub[6] }}</td>
+                                <td>{{ stub[2] | string }} - {{ stub[3] | string }}</td>
+                                <td>${{ "%.2f"|format(stub[4]) }}</td>
+                                <td>${{ "%.2f"|format(stub[5]) }}</td>
+                                <td>
+                                    <span class="status-badge {% if stub[7] %}edited{% else %}normal{% endif %}">
+                                        {% if stub[7] %}✏️ Edited{% else %}✓ Normal{% endif %}
+                                    </span>
+                                </td>
+                                <td class="action-links">
+                                    <a href="{{ url_for('view_stub', stub_id=stub[0]) }}" class="link-btn">View</a>
+                                    <a href="{{ url_for('view_transactions', stub_id=stub[0]) }}" class="link-btn">💳 Transactions</a>
+                                    <a href="{{ url_for('edit_stub', stub_id=stub[0]) }}" class="link-btn">Edit</a>
+                                    <a href="{{ url_for('download_stub', stub_id=stub[0]) }}" class="link-btn">PDF</a>
+                                    <a href="{{ url_for('delete_stub', stub_id=stub[0]) }}" class="link-btn link-danger" onclick="return confirm('Delete this paystub?')">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    <div style="margin-top: 1rem; display: none;" id="massDeleteButton">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete the selected paystubs? This action cannot be undone!')">
+                            🗑️ Delete Selected Paystubs
+                        </button>
+                    </div>
+                </form>
+            {% else %}
+                <p class="empty-state">No paystubs yet. <a href="{{ url_for('generate') }}">Generate some now!</a></p>
+            {% endif %}
+        </section>
+
+        <!-- Employees -->
+        <section class="dashboard-section">
+            <h2 class="section-title">Your Employees</h2>
+            {% if employees %}
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Location</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emp in employees %}
+                        <tr>
+                            <td><strong>{{ emp[1] }}</strong></td>
+                            <td>{{ emp[4] }}</td>
+                            <td>{{ emp[2] or '' }}{% if emp[2] and emp[3] %}, {% endif %}{{ emp[3] or '' }}</td>
+                            <td class="action-links">
+                                <a href="{{ url_for('edit_employee', employee_id=emp[0]) }}" class="link-btn">✏️ Edit</a>
+                                <a href="{{ url_for('delete_employee', employee_id=emp[0]) }}" class="link-btn link-danger" onclick="return confirm('Delete this employee? This will also delete all associated paystubs!')">🗑️ Delete</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p class="empty-state">No employees yet. <a href="{{ url_for('create_employee') }}">Add one now!</a></p>
+            {% endif %}
+        </section>
+
+        <!-- Companies -->
+        <section class="dashboard-section">
+            <h2 class="section-title">Your Companies</h2>
+            {% if companies %}
+                <div class="company-list">
+                    {% for company in companies %}
+                    <div class="company-card">
+                        <h3>{{ company[1] }}</h3>
+                        <p>EIN: {{ company[2] }}</p>
+                        <a href="{{ url_for('create_employee') }}" class="btn btn-sm btn-primary">Add Employee</a>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="empty-state">No companies yet. <a href="{{ url_for('create_company') }}">Add one now!</a></p>
+            {% endif %}
+        </section>
+    </div>
+</div>
+
+<script>
+function toggleAllCheckboxes() {
+    const selectAll = document.getElementById('selectAll');
+    const checkboxes = document.querySelectorAll('.stub-checkbox');
+    checkboxes.forEach(cb => cb.checked = selectAll.checked);
+    updateDeleteButton();
+}
+
+function updateDeleteButton() {
+    const checkboxes = document.querySelectorAll('.stub-checkbox:checked');
+    const deleteButton = document.getElementById('massDeleteButton');
+    if (checkboxes.length > 0) {
+        deleteButton.style.display = 'block';
+    } else {
+        deleteButton.style.display = 'none';
+    }
+    
+    // Update select all checkbox state
+    const allCheckboxes = document.querySelectorAll('.stub-checkbox');
+    const selectAll = document.getElementById('selectAll');
+    selectAll.checked = allCheckboxes.length > 0 && checkboxes.length === allCheckboxes.length;
+}
+</script>
+{% endblock %}

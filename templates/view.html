@@ -1,0 +1,129 @@
+## templates/view.html
+
+{% extends "base.html" %}
+
+{% block title %}View Paystub - PayStub Generator Pro{% endblock %}
+
+{% block content %}
+<div class="paystub-container">
+    <div class="paystub-header">
+        <h1>PAYSTUB #{{ stub[3] }}</h1>
+        <div class="paystub-actions">
+            <a href="{{ url_for('download_stub', stub_id=stub[0]) }}" class="btn btn-primary">
+                📥 Download PDF
+            </a>
+            <a href="{{ url_for('view_transactions', stub_id=stub[0]) }}" class="btn btn-primary">
+                💳 View Transactions
+            </a>
+            <a href="{{ url_for('edit_stub', stub_id=stub[0]) }}" class="btn btn-secondary">
+                ✏️ Edit
+            </a>
+            <a href="{{ url_for('profile') }}" class="btn btn-secondary">
+                ← Back
+            </a>
+        </div>
+    </div>
+
+    <div class="paystub-content">
+        <!-- Employee Info -->
+        <div class="paystub-section employee-section">
+            <h2>Employee</h2>
+            <p><strong>{{ stub[22] }}</strong></p>
+            <p>SSN: ***-**-{{ stub[23][-4:] if stub[23] else '****' }}</p>
+            <p>{{ stub[24] }}, {{ stub[25] }} {{ stub[27] }}</p>
+        </div>
+
+        <!-- Pay Period -->
+        <div class="paystub-section">
+            <h2>Pay Period</h2>
+            <p>From: <strong>{{ stub[4] }}</strong></p>
+            <p>To: <strong>{{ stub[5] }}</strong></p>
+        </div>
+
+        <!-- Earnings -->
+        <div class="paystub-section">
+            <h2>Earnings</h2>
+            <table class="paystub-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>Hours</th>
+                        <th>This Period</th>
+                        <th>Year to Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Regular Pay</td>
+                        <td>{{ stub[6] | default(0, true) }}</td>
+                        <td>${{ "%.2f"|format(stub[7]) }}</td>
+                        <td>${{ "%.2f"|format(stub[14]) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Deductions -->
+        <div class="paystub-section">
+            <h2>Deductions</h2>
+            <table class="paystub-table">
+                <thead>
+                    <tr>
+                        <th>Description</th>
+                        <th>This Period</th>
+                        <th>Year to Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Federal Income Tax</td>
+                        <td>${{ "%.2f"|format(stub[8]) }}</td>
+                        <td>${{ "%.2f"|format(stub[15]) }}</td>
+                    </tr>
+                    <tr>
+                        <td>State Income Tax</td>
+                        <td>${{ "%.2f"|format(stub[9]) }}</td>
+                        <td>${{ "%.2f"|format(stub[16]) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Social Security (6.2%)</td>
+                        <td>${{ "%.2f"|format(stub[10]) }}</td>
+                        <td>${{ "%.2f"|format(stub[17]) }}</td>
+                    </tr>
+                    <tr>
+                        <td>Medicare (1.45%)</td>
+                        <td>${{ "%.2f"|format(stub[11]) }}</td>
+                        <td>${{ "%.2f"|format(stub[17]) }}</td>
+                    </tr>
+                    {% if stub[12] and stub[12] > 0 %}
+                    <tr>
+                        <td><strong>Other Deductions (401k, Medical, etc.)</strong></td>
+                        <td>${{ "%.2f"|format(stub[12]) }}</td>
+                        <td>-</td>
+                    </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Net Pay -->
+        <div class="paystub-section net-pay-section">
+            <h2>Net Pay (Take Home)</h2>
+            <div class="net-pay-display">
+                <span class="label">This Period:</span>
+                <span class="amount">${{ "%.2f"|format(stub[13]) }}</span>
+            </div>
+            <div class="net-pay-display">
+                <span class="label">Year to Date:</span>
+                <span class="amount">${{ "%.2f"|format(stub[18]) }}</span>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="paystub-footer">
+            <p>This is an electronically generated paystub. No signature required.</p>
+            <p>Company: {{ stub[28] }} | Generated: {{ stub[21] }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

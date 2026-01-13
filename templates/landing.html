@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Documake - Professional Document Generator{% endblock %}
+
+{% block content %}
+<div class="landing-hero">
+    <div class="hero-content">
+        <div class="hero-icon">📋</div>
+        <h1 class="hero-title">Welcome to <span class="brand-name">Documake</span></h1>
+        <p class="hero-subtitle">Gen the approval with our state of the art tool for FREE for the next 30 days</p>
+        <p class="hero-description">
+            Documake is a powerful document generation tool designed to help you create professional paystubs, 
+            manage employee records, and generate comprehensive transaction histories with ease... Or .. Geneate 
+            documents you need to get the apartment, car, or any other approval that you need. Get that
+            new car, house, or credit card today. While its free. Launch month promotion ends in 30 days!!  
+        </p>
+        
+        <div class="hero-features">
+            <div class="feature-card">
+                <div class="feature-icon">💼</div>
+                <h3>Company Management</h3>
+                <p>Create and manage multiple companies with detailed information including EIN, addresses, and contact details.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">👥</div>
+                <h3>Employee Records</h3>
+                <p>Maintain comprehensive employee profiles with pay rates, tax information, and personal details.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📄</div>
+                <h3>Paystub Generation</h3>
+                <p>Generate professional, ADP-style paystubs with accurate tax calculations, YTD totals, and downloadable PDFs.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3>Transaction History</h3>
+                <p>Automatically generate realistic transaction histories with location-based merchants and export to Excel.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3>Tax Calculations</h3>
+                <p>Accurate 2025 federal and state tax calculations with progressive brackets and FICA deductions.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🔒</div>
+                <h3>Secure & Private</h3>
+                <p>Your data is secure with user authentication and isolated company/employee records.</p>
+            </div>
+        </div>
+        
+        <div class="hero-cta">
+            <a href="{{ url_for('register') }}" class="btn btn-primary btn-lg">Get Started</a>
+            <a href="{{ url_for('login') }}" class="btn btn-secondary btn-lg">Login</a>
+        </div>
+        
+        <div class="hero-credits">
+            <p class="credits-text">
+                <strong>Documake</strong> is designed and developed by <strong>CIJE</strong> using <strong>Cursor AI</strong>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="landing-info">
+    <div class="info-section">
+        <h2>Why Choose Documake?</h2>
+        <div class="info-grid">
+            <div class="info-item">
+                <h3>🎯 Accurate Tax Calculations</h3>
+                <p>Uses 2025 federal tax brackets and state-specific rates for precise deductions and withholdings.</p>
+            </div>
+            <div class="info-item">
+                <h3>⚡ Fast & Efficient</h3>
+                <p>Generate multiple paystubs in seconds with batch processing and automated calculations.</p>
+            </div>
+            <div class="info-item">
+                <h3>📱 Easy to Use</h3>
+                <p>Intuitive interface that makes document generation simple, even for non-technical users.</p>
+            </div>
+            <div class="info-item">
+                <h3>📈 Year-to-Date Tracking</h3>
+                <p>Automatic YTD calculations ensure accurate tax withholding across all pay periods.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Transactions - PayStub Generator Pro{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="form-container">
+        <div class="paystub-header">
+            <h1 class="page-title">Transaction History</h1>
+            <div class="paystub-actions">
+                <a href="{{ url_for('export_transactions_excel', stub_id=paystub_info[0]) }}" class="btn btn-primary">
+                    📊 Export to Excel
+                </a>
+                <a href="{{ url_for('view_stub', stub_id=paystub_info[0]) }}" class="btn btn-secondary">
+                    ← Back to Paystub
+                </a>
+            </div>
+        </div>
+
+        <!-- Paystub Summary -->
+        <div class="dashboard-section" style="margin-bottom: 2rem;">
+            <h2 class="section-title">Pay Period: {{ paystub_info[2] }} to {{ paystub_info[3] }}</h2>
+            <p><strong>Check #{{ paystub_info[1] }}</strong> | Employee: {{ paystub_info[5] }}</p>
+            <p>Location: {{ paystub_info[6] }}, {{ paystub_info[7] }}</p>
+        </div>
+
+        <!-- Summary Cards -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+            <div class="dashboard-section" style="background: #d4edda; border-left: 4px solid #27ae60;">
+                <h3 style="margin-bottom: 0.5rem; color: #155724;">Total Deposits</h3>
+                <p style="font-size: 1.5rem; font-weight: bold; color: #155724; margin: 0;">
+                    ${{ "%.2f"|format(total_deposits) }}
+                </p>
+            </div>
+            <div class="dashboard-section" style="background: #f8d7da; border-left: 4px solid #e74c3c;">
+                <h3 style="margin-bottom: 0.5rem; color: #721c24;">Total Debits</h3>
+                <p style="font-size: 1.5rem; font-weight: bold; color: #721c24; margin: 0;">
+                    ${{ "%.2f"|format(total_debits) }}
+                </p>
+            </div>
+            <div class="dashboard-section" style="background: #d1ecf1; border-left: 4px solid #2980b9;">
+                <h3 style="margin-bottom: 0.5rem; color: #0c5460;">Ending Balance</h3>
+                <p style="font-size: 1.5rem; font-weight: bold; color: #0c5460; margin: 0;">
+                    ${{ "%.2f"|format(balance) }}
+                </p>
+            </div>
+        </div>
+
+        <!-- Transactions Table -->
+        <div class="form-container">
+            <h2 class="section-title">All Transactions ({{ transactions|length }} total)</h2>
+            
+            <div style="overflow-x: auto;">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Merchant</th>
+                            <th>Category</th>
+                            <th>Location</th>
+                            <th style="text-align: right;">Amount</th>
+                            <th>Type</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trans in transactions %}
+                        <tr class="{{ 'edited' if trans[6] == 'deposit' else '' }}">
+                            <td>{{ trans[1] }}</td>
+                            <td>{{ trans[2] }}</td>
+                            <td>{{ trans[3] or 'N/A' }}</td>
+                            <td>
+                                <span class="status-badge {{ 'normal' if trans[6] == 'deposit' else 'edited' }}">
+                                    {{ trans[4]|upper }}
+                                </span>
+                            </td>
+                            <td>{{ trans[7] or '' }}{% if trans[7] and trans[8] %}, {% endif %}{{ trans[8] or '' }}</td>
+                            <td style="text-align: right; font-weight: 600; color: {{ '#27ae60' if trans[6] == 'deposit' else '#e74c3c' }};">
+                                {{ '+' if trans[6] == 'deposit' else '-' }}${{ "%.2f"|format(trans[5]) }}
+                            </td>
+                            <td>
+                                <span class="status-badge {{ 'normal' if trans[6] == 'deposit' else 'edited' }}">
+                                    {{ trans[6]|upper }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            {% if transactions|length == 0 %}
+            <div class="empty-state">
+                <p>No transactions found for this paystub.</p>
+                <a href="{{ url_for('generate_transactions_route', stub_id=paystub_info[0]) }}" class="btn btn-primary">
+                    Generate Transactions
+                </a>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Category Breakdown -->
+        {% if category_totals|length > 0 %}
+        <div class="form-container" style="margin-top: 2rem;">
+            <h2 class="section-title">Spending by Category</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem;">
+                {% for cat, amount in category_totals.items() %}
+                <div class="dashboard-section">
+                    <h3 style="margin-bottom: 0.5rem; text-transform: capitalize;">{{ cat }}</h3>
+                    <p style="font-size: 1.2rem; font-weight: bold; color: var(--primary-color); margin: 0;">
+                        ${{ "%.2f"|format(amount) }}
+                    </p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+

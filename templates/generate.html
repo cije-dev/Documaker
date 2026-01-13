@@ -1,0 +1,81 @@
+## templates/generate.html
+
+{% extends "base.html" %}
+
+{% block title %}Generate Paystubs - PayStub Generator Pro{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1 class="page-title">Generate Paystubs</h1>
+
+    <form method="POST" class="form-card">
+        <div class="form-row">
+            <div class="form-group">
+                <label for="employee_id">Select Employee *</label>
+                <select id="employee_id" name="employee_id" required class="form-control">
+                    <option value="">-- Choose Employee --</option>
+                    {% for emp in employees %}
+                        <option value="{{ emp[0] }}">{{ emp[1] }} ({{ emp[3] }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="start_date">Start Date *</label>
+                <input type="date" id="start_date" name="start_date" required class="form-control" 
+                       value="{{ today }}">
+            </div>
+
+            <div class="form-group">
+                <label for="start_check_num">Starting Check Number *</label>
+                <input type="number" id="start_check_num" name="start_check_num" required 
+                       class="form-control" value="1001" min="1">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="num_stubs">Number of Stubs to Generate *</label>
+                <input type="number" id="num_stubs" name="num_stubs" required class="form-control" 
+                       value="26" min="1" max="52">
+                <small>Maximum 52 for a full year</small>
+            </div>
+
+            <div class="form-group">
+                <label for="direction">Generate Direction *</label>
+                <select id="direction" name="direction" class="form-control" required>
+                    <option value="future">Future (Forward)</option>
+                    <option value="past">Past (Backward)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary btn-lg">
+                <span class="btn-icon">➕</span> Generate Paystubs
+            </button>
+            <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+
+    <div class="info-box">
+        <h3>ℹ️ Tips for Generating Paystubs</h3>
+        <ul>
+            <li><strong>Future:</strong> Generates stubs starting from your start date going forward</li>
+            <li><strong>Past:</strong> Generates stubs counting backward from your start date</li>
+            <li>All stubs will have accurate YTD (Year to Date) calculations</li>
+            <li>2025 tax calculations are automatically applied for federal, state, and FICA</li>
+            <li>You can edit any stub after generation and propagate changes to later stubs</li>
+        </ul>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('start_date').value = today;
+});
+</script>
+{% endblock %}

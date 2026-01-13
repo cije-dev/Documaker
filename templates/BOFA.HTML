@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bank Statement (HTML) – Bank of America Core Checking</title>
+  <style>
+    :root{
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --bg:#f9fafb;
+      --card:#ffffff;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, Helvetica, sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      line-height:1.35;
+    }
+    .page{
+      max-width: 980px;
+      margin: 28px auto;
+      padding: 0 16px 40px;
+    }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:18px;
+      margin: 14px 0;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+    header.statement-header{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      align-items:flex-start;
+      justify-content:space-between;
+    }
+    h1{
+      margin:0 0 6px 0;
+      font-size:20px;
+      letter-spacing:.2px;
+    }
+    .sub{
+      color:var(--muted);
+      font-size:13px;
+    }
+    .grid{
+      display:grid;
+      gap:14px;
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .col-6{grid-column: span 6;}
+    .col-12{grid-column: span 12;}
+    @media (max-width: 760px){
+      .col-6{grid-column: span 12;}
+    }
+    .kv{
+      margin:0;
+      font-size:13px;
+    }
+    .kv b{display:inline-block; min-width:140px;}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:13px;
+    }
+    th, td{
+      text-align:left;
+      padding:10px 10px;
+      border-bottom:1px solid var(--line);
+      vertical-align:top;
+    }
+    th{
+      font-size:12px;
+      color:var(--muted);
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      background:#fafafa;
+    }
+    .right{text-align:right}
+    .note{
+      font-size:12.5px;
+      color:var(--muted);
+    }
+    .section-title{
+      margin:0 0 10px 0;
+      font-size:15px;
+    }
+    .pill{
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      margin-top:6px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+
+    <!-- Header / Contact -->
+    <div class="card">
+      <header class="statement-header">
+        <div>
+          <h1>Bank of America, N.A. – Statement</h1>
+          <div class="sub">Customer service information</div>
+          <div class="pill">Your BofA Core Checking</div>
+        </div>
+        <div class="sub">
+          <div><b>Customer Service:</b> 1.800.432.1000</div>
+          <div><b>TDD/TTY:</b> 1.800.288.4408</div>
+          <div><b>En Español:</b> 1.800.688.6086</div>
+          <div><b>Website:</b> bankofamerica.com</div>
+        </div>
+      </header>
+
+      <hr style="border:none;border-top:1px solid var(--line);margin:14px 0;">
+
+      <div class="grid">
+        <div class="col-6">
+          <p class="kv"><b>Customer:</b> HELEN YEN</p>
+          <p class="kv"><b>Mailing Address:</b><br>
+            3421 EL CAMINO REAL<br>
+            ATHERTON, CA 94027-4301
+          </p>
+        </div>
+        <div class="col-6">
+          <p class="kv"><b>Account number:</b> 4400 66** **** 9736</p>
+          <p class="kv"><b>Statement period:</b> October 23, 2021 to November 22, 2021</p>
+          <p class="kv"><b>Bank Address:</b><br>
+            Bank of America, N.A.<br>
+            P.O. Box 25118<br>
+            Tampa, FL 33622-5118
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Summary -->
+    <div class="card">
+      <h2 class="section-title">Account summary</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td>Beginning balance on October 23, 2021</td>
+            <td class="right">$3,431.87</td>
+          </tr>
+          <tr>
+            <td>Deposits and other additions</td>
+            <td class="right">$2,538.00</td>
+          </tr>
+          <tr>
+            <td>ATM and debit card subtractions</td>
+            <td class="right">-$1,144.64</td>
+          </tr>
+          <tr>
+            <td>Other subtractions</td>
+            <td class="right">-$2,106.42</td>
+          </tr>
+          <tr>
+            <td>Checks</td>
+            <td class="right">-$345.00</td>
+          </tr>
+          <tr>
+            <td>Service fees</td>
+            <td class="right">-$0.00</td>
+          </tr>
+          <tr>
+            <td><b>Ending balance on November 22, 2021</b></td>
+            <td class="right"><b>$2,373.81</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- IMPORTANT INFORMATION -->
+    <div class="card">
+      <h2 class="section-title">Important information</h2>
+      <div class="note">
+        <p><b>BANK DEPOSIT ACCOUNTS</b></p>
+        <p><b>Change of address</b> – Please call the telephone number listed on the front of this statement.</p>
+        <p><b>Deposit agreement</b> – Your account is governed by the deposit agreement and fee schedule, as amended from time to time.</p>
+
+        <p><b>Electronic transfers: In case of errors or questions about your electronic transfers</b> – If you think your statement or receipt is wrong
+        or need more information about an electronic transfer, contact the bank as soon as you can. The bank must hear from you no later than
+        60 days after it sent you the FIRST statement on which the error or problem appeared.</p>
+
+        <ul>
+          <li>Tell the bank your name and account number.</li>
+          <li>Describe the error/transfer and why you believe there is an error or need more information.</li>
+          <li>Tell the dollar amount of the suspected error.</li>
+        </ul>
+
+        <p><b>Reporting other problems</b> – Examine your statement promptly and notify the bank in writing within the time period specified in the deposit agreement.</p>
+        <p><b>Direct deposits</b> – If you have arranged recurring direct deposits, you may call to confirm deposits or review activity online.</p>
+
+        <p>© 2013 Bank of America Corporation</p>
+      </div>
+    </div>
+
+    <!-- Deposits -->
+    <div class="card">
+      <h2 class="section-title">Deposits and other additions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:110px;">Date</th>
+            <th>Description</th>
+            <th class="right" style="width:140px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>12/24/14</td>
+            <td>Ssa Treas 310 Des:Xxsoc Sec Id:Xxxxxxxxxa Ssa Indn:Randall J Wright Co Id:9031036360 Ppd</td>
+            <td class="right">$1,538.00</td>
+          </tr>
+          <tr>
+            <td>01/21/15</td>
+            <td>Td Ameritrade Des:Ach Out Id:Avga24fpdg Indn:Wright Randall Co Id:5470533629 Ppd</td>
+            <td class="right">$1,000.00</td>
+          </tr>
+          <tr>
+            <td colspan="2"><b>Total deposits and other additions</b></td>
+            <td class="right"><b>$2,538.00</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ATM & Debit -->
+    <div class="card">
+      <h2 class="section-title">ATM and debit card subtractions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:110px;">Date</th>
+            <th>Description</th>
+            <th class="right" style="width:140px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>12/23/14</td><td>NORDSTROM 3635 12/23 #000021368 PURCHASE NORDSTROM 3635 RI RIVERSIDE CA</td><td class="right">-$21.59</td></tr>
+          <tr><td>12/26/14</td><td>CHECKCARD 1224 SPAGHETTI BENDER NEWPORT BEACHCA 24071054359985315638429</td><td class="right">-$149.47</td></tr>
+          <tr><td>01/02/15</td><td>STATERBROS114 01/01 #000559198 PURCHASE STATERBROS114 RIVERSIDE CA</td><td class="right">-$33.97</td></tr>
+          <tr><td>01/02/15</td><td>USA 63343 01/02 #000762376 PURCHASE USA 63343 RIVERSIDE CA</td><td class="right">-$12.00</td></tr>
+          <tr><td>01/02/15</td><td>THE HOME DEPOT 01/02 #000175101 PURCHASE THE HOME DEPOT 66 RIVERSIDE CA</td><td class="right">-$8.53</td></tr>
+          <tr><td>01/05/15</td><td>CHECKCARD 0104 ISLANDS RESTAURANTS 0 RIVERSIDE CA 24692165004000453483927</td><td class="right">-$32.44</td></tr>
+          <tr><td>01/05/15</td><td>COSTCO GAS #04 01/05 #000562843 PURCHASE COSTCO GAS #043 CORONA CA</td><td class="right">-$20.57</td></tr>
+          <tr><td>01/05/15</td><td>Wal-Mart Super 01/05 #000148183 PURCHASE Wal-Mart Super Ce CORONA CA</td><td class="right">-$45.95</td></tr>
+          <tr><td>01/05/15</td><td>TRADER JOE'S # 01/05 #000552169 PURCHASE TRADER JOE'S # RIVERSIDE CA</td><td class="right">-$23.16</td></tr>
+          <tr><td>01/12/15</td><td>TRADER JOE'S # 01/11 #000210198 PURCHASE TRADER JOE'S # RIVERSIDE CA</td><td class="right">-$35.63</td></tr>
+          <tr><td>01/12/15</td><td>THE HOME DEPOT 01/12 #000900501 PURCHASE THE HOME DEPOT 66 RIVERSIDE CA</td><td class="right">-$213.84</td></tr>
+          <tr><td>01/13/15</td><td>BARNESNOB 3485 01/13 #000028263 PURCHASE BARNESNOB 3485 Ty Riverside CA</td><td class="right">-$13.99</td></tr>
+          <tr><td>01/13/15</td><td>BKOFAMERICA ATM 01/13 #000008191 WITHDRWL MAGNOLIA CENTER RIVERSIDE CA</td><td class="right">-$60.00</td></tr>
+          <tr><td>01/13/15</td><td>TRADER JOE'S # 01/13 #000415794 PURCHASE TRADER JOE'S # RIVERSIDE CA</td><td class="right">-$17.32</td></tr>
+          <tr><td>01/14/15</td><td>CHECKCARD 0114 CHEVRON 002023 WESTMINSTER CA 09581840460350142309535</td><td class="right">-$10.54</td></tr>
+          <tr><td>01/20/15</td><td>CHECKCARD 0118 POLLY'S PIES #220 MORENO VALLEYCA 24692165018000782258143</td><td class="right">-$25.42</td></tr>
+          <tr><td>01/20/15</td><td>CHECKCARD 0118 AmazonPrime Membership amzn.com/prmeNV 24692165018000927236830 (RECURRING)</td><td class="right">-$106.92</td></tr>
+          <tr><td>01/20/15</td><td>TRADER JOE'S # 01/18 #000041005 PURCHASE TRADER JOE'S # RIVERSIDE CA</td><td class="right">-$28.74</td></tr>
+          <tr><td>01/20/15</td><td>FRESH &amp; EASY # 01/18 #000857642 PURCHASE FRESH &amp; EASY #1 RIVERSIDE CA</td><td class="right">-$11.51</td></tr>
+          <tr><td>01/21/15</td><td>CHECKCARD 0120 PAYPAL *ADORAMACAME 402-935-7733 NY 24492155020894975758946</td><td class="right">-$219.94</td></tr>
+          <tr><td>01/21/15</td><td>CHECKCARD 0120 VESTA *AT&amp;T 866-608-3007 OR 24692165020000838356475</td><td class="right">-$25.00</td></tr>
+          <tr><td>01/21/15</td><td>CIRCLE K 05705 01/21 #000166143 PURCHASE CIRCLE K 05705 30 CORONA CA</td><td class="right">-$13.90</td></tr>
+          <tr><td>01/22/15</td><td>CHECKCARD 0121 049 LAGUNA BEACH JOHNNY LAGUNA BEACH CA 24013395021002050972280</td><td class="right">-$14.21</td></tr>
+          <tr>
+            <td colspan="2"><b>Total ATM and debit card subtractions</b></td>
+            <td class="right"><b>-$1,144.64</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Other subtractions -->
+    <div class="card">
+      <h2 class="section-title">Other subtractions</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:110px;">Date</th>
+            <th>Description</th>
+            <th class="right" style="width:140px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>12/24/14</td><td>MERCURY INSURANCE – Bill Payment</td><td class="right">-$350.33</td></tr>
+          <tr><td>12/24/14</td><td>ATT U-VERSE – Bill Payment</td><td class="right">-$39.95</td></tr>
+          <tr><td>01/02/15</td><td>PNC MORTGAGE – Bill Payment</td><td class="right">-$1,191.00</td></tr>
+          <tr><td>01/05/15</td><td>CITY OF RIVERSIDE – Bill Payment</td><td class="right">-$191.99</td></tr>
+          <tr><td>01/05/15</td><td>CONSUMER CELLULAR – Bill Payment</td><td class="right">-$25.19</td></tr>
+          <tr><td>01/20/15</td><td>Southern California Gas – Bill Payment</td><td class="right">-$138.43</td></tr>
+          <tr><td>01/20/15</td><td>Dish Network – Bill Payment</td><td class="right">-$128.84</td></tr>
+          <tr><td>01/20/15</td><td>ATT U-verse – Bill Payment</td><td class="right">-$39.95</td></tr>
+          <tr><td>01/20/15</td><td>AT&amp;T Bill (SBC-CA) – Bill Payment</td><td class="right">-$0.74</td></tr>
+          <tr>
+            <td colspan="2"><b>Total other subtractions</b></td>
+            <td class="right"><b>-$2,106.42</b></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Checks -->
+    <div class="card">
+      <h2 class="section-title">Checks</h2>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:110px;">Date</th>
+            <th style="width:120px;">Check #</th>
+            <th class="right" style="width:140px;">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>01/20/15</td>
+            <td>4019</td>
+            <td class="right">-$345.00</td>
+          </tr>
+          <tr>
+            <td colspan="2"><b>Total checks</b></td>
+            <td class="right"><b>-$345.00</b></td>
+          </tr>
+          <tr>
+            <td colspan="2">Total # of checks</td>
+            <td class="right">1</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="note" style="margin-top:12px;">
+        To help you balance your checking account, visit bankofamerica.com/statementbalance
+        or the Statements and Documents tab in Online Banking for a printable worksheet.
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>

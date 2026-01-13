@@ -1,0 +1,290 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Employee - PayStub Generator Pro{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1 class="page-title">Edit Employee</h1>
+
+    <form method="POST" class="form-card">
+        <div class="form-section">
+            <h2 class="section-subtitle">Company & Employment Type</h2>
+            
+            <div class="form-group">
+                <label for="company_id">Company *</label>
+                <select id="company_id" name="company_id" required class="form-control">
+                    <option value="">-- Select Company --</option>
+                    {% for company in companies %}
+                        <option value="{{ company[0] }}" {% if company[0] == employee.company_id %}selected{% endif %}>
+                            {{ company[1] }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pay_type">Pay Type *</label>
+                    <select id="pay_type" name="pay_type" required class="form-control" onchange="togglePayFields()">
+                        <option value="hourly" {% if employee.is_hourly %}selected{% endif %}>Hourly</option>
+                        <option value="salary" {% if not employee.is_hourly %}selected{% endif %}>Salary</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="pay_frequency">Pay Frequency *</label>
+                    <select id="pay_frequency" name="pay_frequency" required class="form-control">
+                        <option value="biweekly" {% if employee.pay_frequency == 'biweekly' %}selected{% endif %}>Bi-Weekly (26/year)</option>
+                        <option value="weekly" {% if employee.pay_frequency == 'weekly' %}selected{% endif %}>Weekly (52/year)</option>
+                        <option value="semimonthly" {% if employee.pay_frequency == 'semimonthly' %}selected{% endif %}>Semi-Monthly (24/year)</option>
+                        <option value="monthly" {% if employee.pay_frequency == 'monthly' %}selected{% endif %}>Monthly (12/year)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pay_rate">Pay Rate / Annual Salary *</label>
+                <div class="input-group">
+                    <span class="currency-symbol">$</span>
+                    <input type="number" id="pay_rate" name="pay_rate" step="0.01" required 
+                           class="form-control" value="{{ employee.pay_rate }}" placeholder="0.00">
+                    <span class="currency-suffix" id="rate_suffix">{% if employee.is_hourly %}/hour{% else %}/year{% endif %}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="section-subtitle">Personal Information</h2>
+            
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required class="form-control" value="{{ employee.name }}">
+            </div>
+
+            <div class="form-group">
+                <label for="ssn">Social Security Number (last 4 digits) *</label>
+                <input type="text" id="ssn" name="ssn" required class="form-control" 
+                       placeholder="XXXX" maxlength="4" value="{{ employee.ssn }}">
+            </div>
+
+            <div class="form-group">
+                <label for="street">Street Address</label>
+                <input type="text" id="street" name="street" class="form-control" value="{{ employee.street or '' }}">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" class="form-control" value="{{ employee.city or '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State *</label>
+                    <select id="state" name="state" required class="form-control">
+                        <option value="">-- Select State --</option>
+                        <option value="AL" {% if employee.state == 'AL' %}selected{% endif %}>Alabama</option>
+                        <option value="AK" {% if employee.state == 'AK' %}selected{% endif %}>Alaska</option>
+                        <option value="AZ" {% if employee.state == 'AZ' %}selected{% endif %}>Arizona</option>
+                        <option value="AR" {% if employee.state == 'AR' %}selected{% endif %}>Arkansas</option>
+                        <option value="CA" {% if employee.state == 'CA' %}selected{% endif %}>California</option>
+                        <option value="CO" {% if employee.state == 'CO' %}selected{% endif %}>Colorado</option>
+                        <option value="CT" {% if employee.state == 'CT' %}selected{% endif %}>Connecticut</option>
+                        <option value="DE" {% if employee.state == 'DE' %}selected{% endif %}>Delaware</option>
+                        <option value="FL" {% if employee.state == 'FL' %}selected{% endif %}>Florida</option>
+                        <option value="GA" {% if employee.state == 'GA' %}selected{% endif %}>Georgia</option>
+                        <option value="HI" {% if employee.state == 'HI' %}selected{% endif %}>Hawaii</option>
+                        <option value="ID" {% if employee.state == 'ID' %}selected{% endif %}>Idaho</option>
+                        <option value="IL" {% if employee.state == 'IL' %}selected{% endif %}>Illinois</option>
+                        <option value="IN" {% if employee.state == 'IN' %}selected{% endif %}>Indiana</option>
+                        <option value="IA" {% if employee.state == 'IA' %}selected{% endif %}>Iowa</option>
+                        <option value="KS" {% if employee.state == 'KS' %}selected{% endif %}>Kansas</option>
+                        <option value="KY" {% if employee.state == 'KY' %}selected{% endif %}>Kentucky</option>
+                        <option value="LA" {% if employee.state == 'LA' %}selected{% endif %}>Louisiana</option>
+                        <option value="ME" {% if employee.state == 'ME' %}selected{% endif %}>Maine</option>
+                        <option value="MD" {% if employee.state == 'MD' %}selected{% endif %}>Maryland</option>
+                        <option value="MA" {% if employee.state == 'MA' %}selected{% endif %}>Massachusetts</option>
+                        <option value="MI" {% if employee.state == 'MI' %}selected{% endif %}>Michigan</option>
+                        <option value="MN" {% if employee.state == 'MN' %}selected{% endif %}>Minnesota</option>
+                        <option value="MS" {% if employee.state == 'MS' %}selected{% endif %}>Mississippi</option>
+                        <option value="MO" {% if employee.state == 'MO' %}selected{% endif %}>Missouri</option>
+                        <option value="MT" {% if employee.state == 'MT' %}selected{% endif %}>Montana</option>
+                        <option value="NE" {% if employee.state == 'NE' %}selected{% endif %}>Nebraska</option>
+                        <option value="NV" {% if employee.state == 'NV' %}selected{% endif %}>Nevada</option>
+                        <option value="NH" {% if employee.state == 'NH' %}selected{% endif %}>New Hampshire</option>
+                        <option value="NJ" {% if employee.state == 'NJ' %}selected{% endif %}>New Jersey</option>
+                        <option value="NM" {% if employee.state == 'NM' %}selected{% endif %}>New Mexico</option>
+                        <option value="NY" {% if employee.state == 'NY' %}selected{% endif %}>New York</option>
+                        <option value="NC" {% if employee.state == 'NC' %}selected{% endif %}>North Carolina</option>
+                        <option value="ND" {% if employee.state == 'ND' %}selected{% endif %}>North Dakota</option>
+                        <option value="OH" {% if employee.state == 'OH' %}selected{% endif %}>Ohio</option>
+                        <option value="OK" {% if employee.state == 'OK' %}selected{% endif %}>Oklahoma</option>
+                        <option value="OR" {% if employee.state == 'OR' %}selected{% endif %}>Oregon</option>
+                        <option value="PA" {% if employee.state == 'PA' %}selected{% endif %}>Pennsylvania</option>
+                        <option value="RI" {% if employee.state == 'RI' %}selected{% endif %}>Rhode Island</option>
+                        <option value="SC" {% if employee.state == 'SC' %}selected{% endif %}>South Carolina</option>
+                        <option value="SD" {% if employee.state == 'SD' %}selected{% endif %}>South Dakota</option>
+                        <option value="TN" {% if employee.state == 'TN' %}selected{% endif %}>Tennessee</option>
+                        <option value="TX" {% if employee.state == 'TX' %}selected{% endif %}>Texas</option>
+                        <option value="UT" {% if employee.state == 'UT' %}selected{% endif %}>Utah</option>
+                        <option value="VT" {% if employee.state == 'VT' %}selected{% endif %}>Vermont</option>
+                        <option value="VA" {% if employee.state == 'VA' %}selected{% endif %}>Virginia</option>
+                        <option value="WA" {% if employee.state == 'WA' %}selected{% endif %}>Washington</option>
+                        <option value="WV" {% if employee.state == 'WV' %}selected{% endif %}>West Virginia</option>
+                        <option value="WI" {% if employee.state == 'WI' %}selected{% endif %}>Wisconsin</option>
+                        <option value="WY" {% if employee.state == 'WY' %}selected{% endif %}>Wyoming</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="zip">Zip Code</label>
+                    <input type="text" id="zip" name="zip" class="form-control" maxlength="5" value="{{ employee.zip or '' }}">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="section-subtitle">Deductions (Optional)</h2>
+            <p class="form-help-text">Add pre-tax (401k, health insurance) or post-tax deductions. Leave blank if not applicable.</p>
+            
+            <div id="deductions-container">
+                {% if deductions %}
+                    {% for ded in deductions %}
+                    <div class="deduction-row">
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 2;">
+                                <label>Deduction Name</label>
+                                <input type="text" name="deduction_name[]" class="form-control" value="{{ ded[1] }}" placeholder="e.g., 401k, Health Insurance">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Type</label>
+                                <select name="deduction_type[]" class="form-control">
+                                    <option value="401k" {% if ded[2] == '401k' %}selected{% endif %}>401k</option>
+                                    <option value="medical" {% if ded[2] == 'medical' %}selected{% endif %}>Medical</option>
+                                    <option value="dental" {% if ded[2] == 'dental' %}selected{% endif %}>Dental</option>
+                                    <option value="vision" {% if ded[2] == 'vision' %}selected{% endif %}>Vision</option>
+                                    <option value="other" {% if ded[2] == 'other' %}selected{% endif %}>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label>Amount</label>
+                                <input type="number" name="deduction_amount[]" step="0.01" class="form-control" value="{{ ded[3] }}" placeholder="0.00">
+                            </div>
+                            <div class="form-group" style="flex: 0.8;">
+                                <label>Is %</label>
+                                <input type="checkbox" name="deduction_is_percentage[]" value="1" {% if ded[4] %}checked{% endif %} class="form-control">
+                            </div>
+                            <div class="form-group" style="flex: 0.8;">
+                                <label>Pre-Tax</label>
+                                <input type="checkbox" name="deduction_is_pre_tax[]" value="1" {% if ded[5] %}checked{% endif %} class="form-control">
+                            </div>
+                            <div class="form-group" style="flex: 0.5;">
+                                <label>&nbsp;</label>
+                                <button type="button" class="btn btn-secondary" onclick="this.closest('.deduction-row').remove()">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                <div class="deduction-row">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label>Deduction Name</label>
+                            <input type="text" name="deduction_name[]" class="form-control" placeholder="e.g., 401k, Health Insurance">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Type</label>
+                            <select name="deduction_type[]" class="form-control">
+                                <option value="401k">401k</option>
+                                <option value="medical">Medical</option>
+                                <option value="dental">Dental</option>
+                                <option value="vision">Vision</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Amount</label>
+                            <input type="number" name="deduction_amount[]" step="0.01" class="form-control" placeholder="0.00">
+                        </div>
+                        <div class="form-group" style="flex: 0.8;">
+                            <label>Is %</label>
+                            <input type="checkbox" name="deduction_is_percentage[]" value="1" class="form-control">
+                        </div>
+                        <div class="form-group" style="flex: 0.8;">
+                            <label>Pre-Tax</label>
+                            <input type="checkbox" name="deduction_is_pre_tax[]" value="1" checked class="form-control">
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            
+            <button type="button" class="btn btn-secondary" onclick="addDeductionRow()" style="margin-top: 10px;">+ Add Another Deduction</button>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+            <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
+            <a href="{{ url_for('delete_employee', employee_id=employee.id) }}" 
+               class="btn btn-danger" 
+               onclick="return confirm('Are you sure you want to delete this employee? This will also delete all associated paystubs and transactions!')">
+                🗑️ Delete Employee
+            </a>
+        </div>
+    </form>
+</div>
+
+<script>
+function togglePayFields() {
+    const payType = document.getElementById('pay_type').value;
+    const rateSuffix = document.getElementById('rate_suffix');
+    
+    if (payType === 'salary') {
+        rateSuffix.textContent = '/year';
+    } else {
+        rateSuffix.textContent = '/hour';
+    }
+}
+
+function addDeductionRow() {
+    const container = document.getElementById('deductions-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'deduction-row';
+    newRow.innerHTML = `
+        <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+                <label>Deduction Name</label>
+                <input type="text" name="deduction_name[]" class="form-control" placeholder="e.g., 401k, Health Insurance">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Type</label>
+                <select name="deduction_type[]" class="form-control">
+                    <option value="401k">401k</option>
+                    <option value="medical">Medical</option>
+                    <option value="dental">Dental</option>
+                    <option value="vision">Vision</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Amount</label>
+                <input type="number" name="deduction_amount[]" step="0.01" class="form-control" placeholder="0.00">
+            </div>
+            <div class="form-group" style="flex: 0.8;">
+                <label>Is %</label>
+                <input type="checkbox" name="deduction_is_percentage[]" value="1" class="form-control">
+            </div>
+            <div class="form-group" style="flex: 0.8;">
+                <label>Pre-Tax</label>
+                <input type="checkbox" name="deduction_is_pre_tax[]" value="1" checked class="form-control">
+            </div>
+            <div class="form-group" style="flex: 0.5;">
+                <label>&nbsp;</label>
+                <button type="button" class="btn btn-secondary" onclick="this.closest('.deduction-row').remove()">Remove</button>
+            </div>
+        </div>
+    `;
+    container.appendChild(newRow);
+}
+</script>
+{% endblock %}
+

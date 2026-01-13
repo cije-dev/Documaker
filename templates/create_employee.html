@@ -1,0 +1,248 @@
+## templates/create_employee.html
+
+{% extends "base.html" %}
+
+{% block title %}Add Employee - PayStub Generator Pro{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1 class="page-title">Add New Employee</h1>
+
+    <form method="POST" class="form-card">
+        <div class="form-section">
+            <h2 class="section-subtitle">Company & Employment Type</h2>
+            
+            <div class="form-group">
+                <label for="company_id">Company *</label>
+                <select id="company_id" name="company_id" required class="form-control">
+                    <option value="">-- Select Company --</option>
+                    {% for company in companies %}
+                        <option value="{{ company[0] }}">{{ company[1] }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="pay_type">Pay Type *</label>
+                    <select id="pay_type" name="pay_type" required class="form-control" onchange="togglePayFields()">
+                        <option value="hourly">Hourly</option>
+                        <option value="salary">Salary</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="pay_frequency">Pay Frequency *</label>
+                    <select id="pay_frequency" name="pay_frequency" required class="form-control">
+                        <option value="biweekly">Bi-Weekly (26/year)</option>
+                        <option value="weekly">Weekly (52/year)</option>
+                        <option value="semimonthly">Semi-Monthly (24/year)</option>
+                        <option value="monthly">Monthly (12/year)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pay_rate">Pay Rate / Annual Salary *</label>
+                <div class="input-group">
+                    <span class="currency-symbol">$</span>
+                    <input type="number" id="pay_rate" name="pay_rate" step="0.01" required 
+                           class="form-control" placeholder="0.00">
+                    <span class="currency-suffix" id="rate_suffix">/hour</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="section-subtitle">Personal Information</h2>
+            
+            <div class="form-group">
+                <label for="name">Full Name *</label>
+                <input type="text" id="name" name="name" required class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="ssn">Social Security Number (last 4 digits) *</label>
+                <input type="text" id="ssn" name="ssn" required class="form-control" 
+                       placeholder="XXXX" maxlength="4">
+            </div>
+
+            <div class="form-group">
+                <label for="street">Street Address</label>
+                <input type="text" id="street" name="street" class="form-control">
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label for="state">State *</label>
+                    <select id="state" name="state" required class="form-control">
+                        <option value="">-- Select State --</option>
+                        <option value="AL">Alabama</option>
+                        <option value="AK">Alaska</option>
+                        <option value="AZ">Arizona</option>
+                        <option value="AR">Arkansas</option>
+                        <option value="CA">California</option>
+                        <option value="CO">Colorado</option>
+                        <option value="CT">Connecticut</option>
+                        <option value="DE">Delaware</option>
+                        <option value="FL">Florida</option>
+                        <option value="GA">Georgia</option>
+                        <option value="HI">Hawaii</option>
+                        <option value="ID">Idaho</option>
+                        <option value="IL">Illinois</option>
+                        <option value="IN">Indiana</option>
+                        <option value="IA">Iowa</option>
+                        <option value="KS">Kansas</option>
+                        <option value="KY">Kentucky</option>
+                        <option value="LA">Louisiana</option>
+                        <option value="ME">Maine</option>
+                        <option value="MD">Maryland</option>
+                        <option value="MA">Massachusetts</option>
+                        <option value="MI">Michigan</option>
+                        <option value="MN">Minnesota</option>
+                        <option value="MS">Mississippi</option>
+                        <option value="MO">Missouri</option>
+                        <option value="MT">Montana</option>
+                        <option value="NE">Nebraska</option>
+                        <option value="NV">Nevada</option>
+                        <option value="NH">New Hampshire</option>
+                        <option value="NJ">New Jersey</option>
+                        <option value="NM">New Mexico</option>
+                        <option value="NY">New York</option>
+                        <option value="NC">North Carolina</option>
+                        <option value="ND">North Dakota</option>
+                        <option value="OH">Ohio</option>
+                        <option value="OK">Oklahoma</option>
+                        <option value="OR">Oregon</option>
+                        <option value="PA">Pennsylvania</option>
+                        <option value="RI">Rhode Island</option>
+                        <option value="SC">South Carolina</option>
+                        <option value="SD">South Dakota</option>
+                        <option value="TN">Tennessee</option>
+                        <option value="TX">Texas</option>
+                        <option value="UT">Utah</option>
+                        <option value="VT">Vermont</option>
+                        <option value="VA">Virginia</option>
+                        <option value="WA">Washington</option>
+                        <option value="WV">West Virginia</option>
+                        <option value="WI">Wisconsin</option>
+                        <option value="WY">Wyoming</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="zip">Zip Code</label>
+                    <input type="text" id="zip" name="zip" class="form-control" maxlength="5">
+                </div>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2 class="section-subtitle">Deductions (Optional)</h2>
+            <p class="form-help-text">Add pre-tax (401k, health insurance) or post-tax deductions. Leave blank if not applicable.</p>
+            
+            <div id="deductions-container">
+                <div class="deduction-row">
+                    <div class="form-row">
+                        <div class="form-group" style="flex: 2;">
+                            <label>Deduction Name</label>
+                            <input type="text" name="deduction_name[]" class="form-control" placeholder="e.g., 401k, Health Insurance">
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Type</label>
+                            <select name="deduction_type[]" class="form-control">
+                                <option value="401k">401k</option>
+                                <option value="medical">Medical</option>
+                                <option value="dental">Dental</option>
+                                <option value="vision">Vision</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="flex: 1;">
+                            <label>Amount</label>
+                            <input type="number" name="deduction_amount[]" step="0.01" class="form-control" placeholder="0.00">
+                        </div>
+                        <div class="form-group" style="flex: 0.8;">
+                            <label>Is %</label>
+                            <input type="checkbox" name="deduction_is_percentage[]" value="1" class="form-control">
+                        </div>
+                        <div class="form-group" style="flex: 0.8;">
+                            <label>Pre-Tax</label>
+                            <input type="checkbox" name="deduction_is_pre_tax[]" value="1" checked class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <button type="button" class="btn btn-secondary" onclick="addDeductionRow()" style="margin-top: 10px;">+ Add Another Deduction</button>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">👤 Add Employee</button>
+            <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<script>
+function togglePayFields() {
+    const payType = document.getElementById('pay_type').value;
+    const rateSuffix = document.getElementById('rate_suffix');
+    const payRate = document.getElementById('pay_rate');
+    
+    if (payType === 'salary') {
+        rateSuffix.textContent = '/year';
+        payRate.placeholder = '0.00';
+    } else {
+        rateSuffix.textContent = '/hour';
+        payRate.placeholder = '0.00';
+    }
+}
+
+function addDeductionRow() {
+    const container = document.getElementById('deductions-container');
+    const newRow = document.createElement('div');
+    newRow.className = 'deduction-row';
+    newRow.innerHTML = `
+        <div class="form-row">
+            <div class="form-group" style="flex: 2;">
+                <label>Deduction Name</label>
+                <input type="text" name="deduction_name[]" class="form-control" placeholder="e.g., 401k, Health Insurance">
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Type</label>
+                <select name="deduction_type[]" class="form-control">
+                    <option value="401k">401k</option>
+                    <option value="medical">Medical</option>
+                    <option value="dental">Dental</option>
+                    <option value="vision">Vision</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+            <div class="form-group" style="flex: 1;">
+                <label>Amount</label>
+                <input type="number" name="deduction_amount[]" step="0.01" class="form-control" placeholder="0.00">
+            </div>
+            <div class="form-group" style="flex: 0.8;">
+                <label>Is %</label>
+                <input type="checkbox" name="deduction_is_percentage[]" value="1" class="form-control">
+            </div>
+            <div class="form-group" style="flex: 0.8;">
+                <label>Pre-Tax</label>
+                <input type="checkbox" name="deduction_is_pre_tax[]" value="1" checked class="form-control">
+            </div>
+            <div class="form-group" style="flex: 0.5;">
+                <label>&nbsp;</label>
+                <button type="button" class="btn btn-secondary" onclick="this.closest('.deduction-row').remove()">Remove</button>
+            </div>
+        </div>
+    `;
+    container.appendChild(newRow);
+}
+</script>
+{% endblock %}

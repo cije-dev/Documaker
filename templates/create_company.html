@@ -1,0 +1,39 @@
+## templates/create_company.html
+
+{% extends "base.html" %}
+
+{% block title %}Add Company - PayStub Generator Pro{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h1 class="page-title">Add New Company</h1>
+
+    <form method="POST" class="form-card">
+        <div class="form-group">
+            <label for="name">Company Name *</label>
+            <input type="text" id="name" name="name" required class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="ein">EIN (Employer ID Number) *</label>
+            <input type="text" id="ein" name="ein" required class="form-control" 
+                   placeholder="XX-XXXXXXX">
+        </div>
+
+        <div class="form-group">
+            <label for="address">Street Address</label>
+            <input type="text" id="address" name="address" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" name="phone" class="form-control">
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">➕ Create Company</button>
+            <a href="{{ url_for('profile') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
